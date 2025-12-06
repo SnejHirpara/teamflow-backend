@@ -1,31 +1,36 @@
-import * as userService from "./user.service.js";
+import * as userService from "../user/user.service.js";
 import asyncHandler from "../../utils/asyncHandler.js";
+import { ApiResponse } from "../../utils/ApiResponse.js";
+import { ApiError } from "../../utils/ApiError.js";
 
 export const signUp = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!email || !name || !password) {
-    return res.status(400).json({
-      success: false,
-      message: "Missing name, email or password field(s)",
-    });
+    return res
+      .status(400)
+      .json(new ApiError(400, "Missing name, email or password field(s)"));
   }
 
   try {
-    const existingUser = await userService.getUserByEmail(email);
+    const existingUser = await userService.getUserIdByEmail(email);
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already exists." });
+      return res.status(400).json(new ApiError(400, "User already exists."));
     }
 
     const user = await userService.createUser({ name, email, password });
-    return res.status(201).json({
-      success: true,
-      data: { user },
-      message: "User created successfully.",
-    });
+    return res
+      .status(201)
+      .json(new ApiResponse(201, { user }, "User created successfully."));
   } catch (error) {
-    return res.status(500).json({ success: false, message: error });
+    return res
+      .status(500)
+      .json(
+        new ApiError(
+          500,
+          "Something went wrong while signing up new user.",
+          error
+        )
+      );
   }
 });

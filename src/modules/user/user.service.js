@@ -9,6 +9,13 @@ export const createUser = async ({ name, email, password }) => {
   });
 };
 
-export const getUserByEmail = async (email) => {
+export const getUserIdByEmail = async (email) => {
+  return prismaClient.user.findUnique({
+    where: { email },
+    select: { id: true },
+  });
+};
+
+export const getUserInfoByEmail = async (email) => {
   return prismaClient.user.findUnique({ where: { email } });
 };
