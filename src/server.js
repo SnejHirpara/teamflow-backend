@@ -1,9 +1,9 @@
-import app from './app.js';
+import app from "./app.js";
 
-if (process.env.ENVIRONMENT !== 'production') {
-  import('dotenv').then((dotenv) =>
+if (process.env.ENVIRONMENT !== "production") {
+  import("dotenv").then((dotenv) =>
     dotenv.config({
-      path: './env',
+      path: "./env",
     })
   );
 }

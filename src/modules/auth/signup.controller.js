@@ -3,7 +3,7 @@ import asyncHandler from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 import { ApiError } from "../../utils/ApiError.js";
 
-export const signUp = asyncHandler(async (req, res, next) => {
+export const signUp = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!email || !name || !password) {
